@@ -3,7 +3,7 @@
 /**
  * Plugin Name: BuddyPress XProfile Settings
  * Plugin URI:  http://jjj.me
- * Description: XProrile Visibility Settings
+ * Description: XProfile Visibility Settings
  * Author:      John James Jacoby
  * Author URI:  http://jjj.me
  * Version:     1.0
