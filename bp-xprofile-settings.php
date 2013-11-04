@@ -120,7 +120,7 @@ function bp_settings_action_xprofile() {
 	}
 
 	// Bail if no submit action
-	if ( ! isset( $_POST['xprofile-submit'] ) )
+	if ( ! isset( $_POST['xprofile-settings-submit'] ) )
 		return;
 
 	// Bail if not in settings
@@ -135,20 +135,31 @@ function bp_settings_action_xprofile() {
 	}
 
 	// Nonce check
-	check_admin_referer( 'xprofile' );
+	check_admin_referer( 'bp_xprofile_settings' );
 
 	do_action( 'bp_settings_xprofile_before_save' );
 
 	/** Save ******************************************************************/
 
-	// @todo
+	// Only save if there are field ID's being posted
+	if ( ! empty( $_POST['field_ids'] ) ) {
+
+		// Get the POST'ed field ID's
+		$posted_field_ids = explode( ',', $_POST['field_ids'] );
+
+		// Save the visibility settings
+		foreach ( $posted_field_ids as $field_id ) {
+			$visibility_level = !empty( $_POST['field_' . $field_id . '_visibility'] ) ? $_POST['field_' . $field_id . '_visibility'] : 'public';
+			xprofile_set_field_visibility_level( $field_id, bp_displayed_user_id(), $visibility_level );
+		}
+	}
 
 	/** Other *****************************************************************/
 
 	do_action( 'bp_settings_xprofile_after_save' );
 
 	// Redirect to the root domain
-	bp_core_redirect( bp_displayed_user_domain() . bp_get_settings_slug() . '/profile/' );
+	bp_core_redirect( bp_displayed_user_domain() . bp_get_settings_slug() . '/profile' );
 }
 
 /** Screen ********************************************************************/
